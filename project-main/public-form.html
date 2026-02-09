@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ลงทะเบียนผู้ป่วยใหม่</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body onload="publicAuthGuard()">
+
+    <div class="public-container">
+        <button onclick="logoutPublic()" class="btn-logout-public">
+            <svg viewBox="0 0 24 24" style="width:18px;height:18px;fill:currentColor;"><path d="M10.09 15.59L11.5 17l5-5-5-5-1.41 1.41L12.67 11H3v2h9.67l-2.58 2.59zM19 3H5c-1.11 0-2 .9-2 2v4h2V5h14v14H5v-4H3v4c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2z"/></svg>
+            ออกจากระบบ
+        </button>
+
+        <div class="public-header">
+            <img src="/static/Logo.png" alt="Hospital Logo" class="logo-img">
+            <h2>โรงพยาบาลดอกคำใต้</h2>
+            <p>แบบฟอร์มลงทะเบียนผู้ป่วยใหม่ (สำหรับผู้รับบริการ)</p>
+        </div>
+
+        <form action="/public-patient" method="POST">
+                  <div class="form-row">
+                <div class="col-12" style="position: relative;">
+                    <svg style="position: absolute; left: 12px; top: 38px; width:20px; height:20px; color:#666;" viewBox="0 0 24 24"><path d="M20 4H4c-1.11 0-1.99.89-1.99 2L2 18c0 1.11.89 2 2 2h16c1.11 0 2-.89 2-2V6c0-1.11-.89-2-2-2zm0 14H4v-6h16v6zm0-10H4V6h16v2zM6 10h2v2H6zm0 4h8v2H6z" fill="currentColor"/></svg>
+                    <label>เลขบัตรประจำตัวประชาชน</label>
+                    <input type="text" id="p_id" name="p_id" placeholder="เลขบัตร 13 หลัก" style="padding-left: 40px; background-color: #f0f0f0;" maxlength="13"  required>
+                </div>
+            </div>
+
+            <div class="form-row">
+                <div class="col-3"><label>คำนำหน้า</label><select id="p_title" name="p_title"><option>นาย</option><option>นาง</option><option>นางสาว</option><option>ด.ช.</option><option>ด.ญ.</option></select></div>
+                <div class="col-9"><label>ชื่อ</label><input type="text" id="p_name" name="p_name" required></div>
+            </div>
+            <div class="form-row">
+                <div class="col-6"><label>นามสกุล</label><input type="text" id="p_surname" name="p_surname" required></div>
+                <div class="col-6"><label>เบอร์โทรศัพท์</label><input type="tel" id="p_phone" name="p_phone" placeholder="08x-xxx-xxxx"></div>
+            </div>
+
+            <div class="form-row">
+                <div class="col-4"><label>จังหวัด</label><input type="text" id="p_province_home" name="p_province_home" placeholder="ระบุจังหวัด"></div>
+                <div class="col-4"><label>อำเภอ</label><input type="text" id="p_district_home" name="p_district_home" placeholder="ระบุอำเภอ"></div>
+                <div class="col-4"><label>ตำบล</label><input type="text" id="p_subdistrict_home" name="p_subdistrict_home" placeholder="ระบุตำบล"></div>
+            </div>
+
+
+            <div class="form-row">
+                <div class="col-4"><label>วัน/เดือน/ปีเกิด (วว/ดด/ปปปป)</label><input type="date" id="p_dob" name="p_dob" placeholder="เช่น 12/05/2530"></div>
+                <div class="col-4"><label>กรุ๊ปเลือด</label><input type="text" id="p_blood" name="p_blood"></div>
+                <div class="col-4"><label>อาชีพ</label><input type="text" id="p_job" name="p_job"></div>
+            </div>
+
+            <div class="form-row">
+                <div class="col-4"><label>เชื้อชาติ</label><input type="text" id="p_race" name="p_race"></div>
+                <div class="col-4"><label>สัญชาติ</label><input type="text" id="p_nat" name="p_nat"></div>
+                <div class="col-4"><label>ศาสนา</label><input type="text" id="p_rel" name="p_rel"></div>
+            </div>
+
+            <div class="form-row">
+                <div class="col-6"><label>ชื่อ-สกุล บิดา</label><input type="text" id="p_father" name="p_father"></div>
+                <div class="col-6"><label>ชื่อ-สกุล มารดา</label><input type="text" id="p_mother" name="p_mother"></div>
+            </div>
+            <div class="form-row">
+                <div class="col-12"><label>ชื่อ-สกุล คู่สมรส (ถ้ามี)</label><input type="text" id="p_spouse" name="p_spouse"></div>
+            </div>
+
+            <div class="section-head" style="margin-top: 20px; margin-bottom: 10px; border-bottom: 1px dashed #ddd; padding-bottom: 5px; color: #2d6a4f; font-weight: bold;">ผู้ที่สามารถติดต่อได้ฉุกเฉิน</div>
+            
+            <div class="form-row">
+                <div class="col-6"><label>ชื่อ-นามสกุล</label><input type="text" id="p_em_name" name="p_em_name"></div>
+                <div class="col-6"><label>เบอร์โทรศัพท์</label><input type="tel" id="p_em_phone" name="p_em_phone"></div>
+            </div>
+            <hr style="margin: 30px 0; border:0; border-top:2px solid #2d6a4f;">
+
+            <div class="form-row">
+                <div class="col-12 radio-group">
+                    <span class="radio-title" style="font-size: 16px; color:#2d6a4f;">สิทธิการรักษา :</span>
+                    <label><input type="radio" name="rights" value="ชำระเงินเอง"> ชำระเงินเอง</label>
+                    <label><input type="radio" name="rights" value="บัตรทอง (UC)"> บัตรทอง (UC)</label>
+                    <label><input type="radio" name="rights" value="ประกันสังคม"> ประกันสังคม</label>
+                    <label><input type="radio" name="rights" value="ข้าราชการ"> ข้าราชการ/รัฐวิสาหกิจ</label>
+                </div>
+            </div>
+
+                     <div class="form-row"><div class="col-12"><label></label><input type="text" id="i_id" name="i_id" placeholder="หมายเลขสิทธิการรักษา"></div>
+                </div>
+
+            <div id="allergy-container">
+
+                <div class="form-row" id="allergy-template">
+                    <div class="col-4">
+                        <span class="radio-title" style="font-size: 16px; color:#2d6a4f;">ยาที่แพ้ :</span>
+                        <select name="AD[]" >
+                            <option value="">-- ไม่มียาที่แพ้ --</option>
+                            <option value="001">Paracetamol</option>
+                            <option value="002">Amoxicillin (UC)</option>
+                            <option value="003">Ibuprofen</option>
+                            <option value="004">Omeprazole</option>
+                            <option value="005">Metformin</option>
+                            <option value="006">Amlodipine (UC)</option>
+                            <option value="007">Simvastatin</option>
+                            <option value="008">Cetirizine</option>
+                        </select>
+                    </div>
+
+                    <div class="col-4">
+                        <input type="text" name="DR[]" placeholder="อาการ">
+                    </div>
+
+                    <div class="col-4">
+                        <input type="text" name="DS[]" placeholder="ความรุนแรง">
+                    </div>
+                </div>
+
+            </div>
+
+            <button type="button" id="add-allergy" onclick="addAllergyRow()">
+                ➕ เพิ่มยาที่แพ้
+            </button>
+
+            
+            <div class="col-12 radio-group">
+                <span class="radio-title" style="font-size: 16px; color:#2d6a4f;">ใบนัด :</span>
+                <label><input type="radio" name="apm" value="มี"> มี</label>
+                <label><input type="radio" name="apm" value="ไม่มี"> ไม่มี</label>
+            </div>
+
+            <div class="form-row">
+                <div class="col-12">
+                    <input type="text" id="a_id" name="a_id" placeholder="หมายเลขใบนัด">
+                    <input type="date" id="datetime" name="datetime" placeholder="วันที่นัดเช่น 12/05/2530">
+                </div>
+                <div class="col-12">
+                    <select name="Adoc_id">
+                        <option value="">-- ไม่มี --</option>
+                        <option value="D001">D001</option>
+                        <option value="D002">D002</option>
+                        <option value="D003">D003</option>
+                        <option value="D004">D004</option>
+                        <option value="D005">D005</option>
+
+                    </select>
+                    <input type="text" id="reason" name="reason" placeholder="เหตุผลที่นัด">
+                </div>
+            </div>
+                
+            <div style="margin-top: 30px;">
+                <button type="submit" class="btn-submit">ยืนยันการลงทะเบียน</button>
+                <p style="text-align: center; margin-top: 15px; color: #888; font-size: 13px;">
+                    *กรุณาตรวจสอบข้อมูลให้ถูกต้องก่อนกดส่ง<br>
+                    ข้อมูลของท่านจะถูกส่งเข้าสู่ระบบเวชระเบียนของโรงพยาบาลโดยตรง
+                </p>
+            </div>
+        </form>
+    </div>
+
+    <script src="/static/script.js"></script>
+</body>
+</html>
